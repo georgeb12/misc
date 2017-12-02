@@ -43,14 +43,13 @@ void heapPermutation(int a[], int size, int n)
 // Driver code
 int main(int argc, char *argv[])
 {
-    int n;
-    sscanf(argv[1], "%i", &n);
+    int n = argc - 1;
+    int a[n];
     
-    int a[n-1];
         
     for (int i=0; i<n; i++) 
     {
-        a[i] = i + 1;
+        sscanf(argv[i + 1], "%i", &a[i]);;
     }
     
     heapPermutation(a, n, n);
