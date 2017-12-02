@@ -31,4 +31,7 @@ cor(mvrt(n,mu,S)) # Don't like how it's not really close to R
 
 # Compare with MASS
 cor(MASS::mvrnorm(n,mu,S))
+
+# and mvtnorm
+cor(mvtnorm::rmvt(n,S) + mu)
 */
