@@ -37,8 +37,7 @@ mvrtR <- function(n, mu, S) {
 
 # Load in cpp mvrt function -----------------------------------------------
 
-setwd("ext_home/github/misc/stats/")
-Rcpp::sourceCpp("mvrt.cpp")
+Rcpp::sourceCpp("mvrt/mvrt.cpp")
 
 # Comparing the distributions of various techniques -----------------------
 
