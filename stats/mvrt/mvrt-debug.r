@@ -5,9 +5,11 @@ pkgs <- c("Rcpp", "RcppArmadillo", "MASS", "microbenchmark", "mvtnorm")
 install.missing.pkgs <- function(pkgs) {
   missing.pkgs <- !pkgs %in% installed.packages()[,1]
   
-  if (length(missing.pkgs)) {
-    cat("Installing: ", pkgs[missing.pkgs], sep = "\n")
+  if (sum(missing.pkgs)) {
+    message("Installing packages: ", pkgs[missing.pkgs], sep = "\n")
     install.packages(pkgs[missing.pkgs])
+  } else {
+    message("No packages installed.")
   }
 }
 
@@ -70,6 +72,24 @@ summary(mvrtR_dist)
 summary(mvrt_dist)
 summary(MASS_dist)
 summary(mvtnorm_dist)
+
+my_hist <- function (data) {
+  hist(
+    data, 
+    xlim = c(-1,1), 
+    breaks = "fd", 
+    main = paste("Histogram of",deparse(substitute(data))),
+    xlab = deparse(substitute(data))
+  )
+  
+  abline(v = 0.9, col = 'red')
+}
+
+my_hist(mvrtR_dist)
+my_hist(mvrt_dist)
+my_hist(MASS_dist)
+my_hist(mvtnorm_dist)
+
 
 # Benchmarking ------------------------------------------------------------
 
