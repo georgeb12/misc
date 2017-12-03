@@ -31,9 +31,10 @@ mvrtR <- function(n, mu, S) {
   
   g <- chol(S)
   
-  bivMat = matrix(0,2,n)
-  for (i in 1:n) bivMat[,i] = mu + g %*% rt(2,n-1)
-  t(bivMat)
+  random_matrix <- matrix(rt(n*length(mu), n-1),nrow = length(mu))
+  deviation <- t(g) %*% random_matrix
+  
+  t(bivMat <- mu + deviation)
   
 }
 
