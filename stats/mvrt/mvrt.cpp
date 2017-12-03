@@ -5,7 +5,7 @@ using namespace Rcpp;
 using namespace arma;
 
 // [[Rcpp::export]]
-mat mvrt(int n, vec mu, mat S) 
+mat mvrt(int n, vec mu, mat S, int df=1)
 {
   
   mat x(mu.size(), n);
@@ -13,7 +13,7 @@ mat mvrt(int n, vec mu, mat S)
 
   for (int i=0; i < n; i++)
   {
-    vec rand = as<vec>(rt(mu.size(),n-1));
+    vec rand = as<vec>(rt(mu.size(),df));
     x.col(i) = mu + g * rand;
   }
   
@@ -30,11 +30,11 @@ message("Use 'mvrt-debug.r' to debug.")
 # V_sqrt <- sqrt(diag(c(2.5,2)))
 # S <- V_sqrt %*% R %*% V_sqrt
 # 
-# cor(mvrt(n,mu,S))
+# cor(mvrt(n,mu,S,n-1))
 # 
 # # Compare with MASS
 # cor(MASS::mvrnorm(n,mu,S))
 # 
 # # and mvtnorm
-# cor(mvtnorm::rmvt(n,S) + mu)
+# cor(mvtnorm::rmvt(n,S,n-1) + mu)
 */

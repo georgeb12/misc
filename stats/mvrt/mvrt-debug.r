@@ -45,11 +45,11 @@ n <- 30
 
 # Defining function for mvrtR ---------------------------------------------
 
-mvrtR <- function(n, mu, S) {
+mvrtR <- function(n, mu, S, df = n - 1) {
   
   g <- chol(S)
   
-  random_matrix <- matrix(rt(n*length(mu), n-1),nrow = length(mu))
+  random_matrix <- matrix(rt(n*length(mu), df),nrow = length(mu))
   deviation <- t(g) %*% random_matrix
   
   t(mu + deviation)
@@ -83,12 +83,16 @@ get_cor_dist <- function(FUN, times, ..., seed = 999) {
 }
 
 mvrtR_dist <-   get_cor_dist(mvrtR, 100, n, mu, S)
-mvrt_dist <-    get_cor_dist(mvrt, 100, n, mu, S)  
+mvrt_dist <-    get_cor_dist(mvrt, 100, n, mu, S, n - 1)  
 MASS_dist <-    get_cor_dist(MASS::mvrnorm, 100, n, mu, S)
-mvtnorm_dist <- get_cor_dist(mvtnorm::rmvt, 100, n, S)
+mvtnorm_dist <- get_cor_dist(mvtnorm::rmvt, 100, n, S, n - 1)
 
 # Do the R and Cpp programs produce identical results?
 identical(mvrtR_dist, mvrt_dist)
+identical(
+  {set.seed(999); mvrtR(n, mu, S)},
+  {set.seed(999); mvrt(n, mu, S, n - 1)}
+  )
 
 # Summary of the distributions
 summary(mvrt_dist)
@@ -116,18 +120,18 @@ my_hist(mvtnorm_dist)
 # Do the means and variances make sense? ----------------------------------
 
 # Mean mu
-colMeans(t(sapply(lapply(rep(30,100), mvrt, mu, S),colMeans)))
+colMeans(t(sapply(lapply(rep(30,100), mvrt, mu, S, n - 1),colMeans)))
 
 # Mean var
-colMeans(t(sapply(lapply(rep(30,100), mvrt, mu, S), apply, 2, var)))
+colMeans(t(sapply(lapply(rep(30,100), mvrt, mu, S, n - 1), apply, 2, var)))
 
 # Benchmarking ------------------------------------------------------------
 
 # I know colon-colon operator will slow down the two functions
 microbenchmark::microbenchmark(
   mvrtR(n, mu, S),
-  mvrt(n, mu, S),
+  mvrt(n, mu, S, n - 1),
   MASS::mvrnorm(n, mu, S),
-  mvtnorm::rmvt(n,S) + mu
+  mvtnorm::rmvt(n, S, n - 1) + mu
 )
   
