@@ -2,3 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+stats/permutations/heaps_nonrecursive_pseudocode
+stats/permutations/heaps_nonrecursive
+stats/permutations/heaps_recursive
+stats/permutations/heaps_recursive.cpp
+stats/permutations/recursive.out
