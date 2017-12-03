@@ -16,11 +16,13 @@ A few bash scripts that might come in handy for other people.
 
 ## stats
 
-These are scripts that illustrate a few statistical concepts.
+These are scripts that illustrate a few statistical concepts. I highly recommend checking out the multivariate normal/t random matrix work.
 
-- Bayesian statistics
-- Jackknife resampling and multivariate normal random sampling
-- Solving the normal equations using a real life example
+- `mvrt/`: Multivariate normal/t random matrix generator
+- `jackknife/`: Jackknife resampling
+- `permutations/`: Combinatorials and permutations
+- `bayes.r`: Bayesian statistics
+- `gradations.r`: Solving the normal equations using a real life example
 
 ## vmd
 
