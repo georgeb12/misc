@@ -97,11 +97,6 @@ var2(law$LSAT) - n.correction #compare with var(law$LSAT)
 ####
 require(MASS)
 
-if (!require(magrittr)) {
-  install.packages("magrittr", dependencies = TRUE)
-  library("matrittr")
-}
-
 ### Creating a bivariate normal data set of n=[whatever i feel like]
 
 #Set mu
@@ -114,29 +109,15 @@ R = matrix(c(1,.9,.9,1),2,2)
 V_sqrt = matrix(c(sqrt(2.5),0,0,sqrt(2)),2,2)
 S = V_sqrt %*% R %*% V_sqrt
 
-#Cholesky decompoisition
-g = chol(S)
-
-#Make empty matrix (faster)
-n = 30
-bivMat = matrix(0,2,n)
-
-#Insert values into matrix
 set.seed(999)
-for (i in 1:n) {
-  bivMat[,i] = mu + g %*% rnorm(2)
-  #Add outliers
-  if (i %% 15 == 0) bivMat[,i] = bivMat[,i] * 1.2
-}
+bivMat <- MASS::mvrnorm(30, mu, S)
 
-#Another way to add some outliers
-#bivMat %<>% cbind(c(5,5),c(3,4))
-
-bivMat %<>% t
+# Add some outliers
+bivMat[1:nrow(bivMat) %% 15 == 0,1] <- bivMat[1:nrow(bivMat) %% 15 == 0,1] + 3
 
 ####Plot our data set. Outliers are in red.
 plot(bivMat)
-points(bivMat[1:n %% 15 == 0,],col=2)
+points(bivMat[1:nrow(bivMat) %% 15 == 0,],col=2)
 
 ####Build a linear model and look at residuals.
 
@@ -148,9 +129,9 @@ jack.residuals = studres(model)
 
 #Now we plot
 #we will use row number as x so we can identify our "outliers"
-plot(1:n,residuals, ylim = c(-4,4))
-points(1:n,standardized.residuals, col=2)
-points(1:n,jack.residuals, col=3)
+plot(residuals, ylim = c(-4,4))
+points(standardized.residuals, col=2)
+points(jack.residuals, col=3)
 #See how much the jackknife residuals stand out?
 
 
