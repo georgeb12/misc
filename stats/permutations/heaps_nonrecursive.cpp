@@ -34,7 +34,7 @@ void heaps_algorithm(int a[], int n)
     {
         if (c[i] < i)
 	{
-	    i%2==0 ? swap(a[0], a[i]) : swap(a[c[i]], a[i]);
+	    i & 1 ? swap(a[c[i]], a[i]) : swap(a[0], a[i]);
 	    
 	    printArray(a, n);
 	    
